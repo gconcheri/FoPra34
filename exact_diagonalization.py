@@ -1,3 +1,5 @@
+import numpy as np
+
 # define basic Pauli matrices
 s_alpha = [np.array([[1, 0], [0, 1]], dtype='complex'),
            np.array([[0, 1], [1, 0]], dtype='complex'),
@@ -15,28 +17,28 @@ def sp(alpha, n, N):
     return Sa
 
 
-def magn_exact_diagonalization(L, g, t, Npoints):
+def magn_exact_diagonalization(N, g, t, Npoints):
     """
     Benchmark the Trotterized circuit evolution with the exact Hamiltonian time evolution,
-    obtained through exact diagonalization (only for small system sizes!). 
+    obtained through exact diagonalization (only for small system sizes N!). 
     This function returns the magnetization for equally spaced timesteps between  0  and  t .
     """
     # array containing the magnetization of individual basis states
-    magnetization_basis_states = -np.array( [np.sum(2*np.array([int(bin(n)[2:].zfill(L)[i]) for i in range(L)]) - 1.0)/L for n in range(2**L)] )
+    magnetization_basis_states = -np.array( [np.sum(2*np.array([int(bin(n)[2:].zfill(N)[i]) for i in range(N)]) - 1.0)/N for n in range(2**N)] )
 
     # create the hamiltonian
-    hamiltonian = np.zeros((2**L, 2**L), dtype='complex')
-    for i in range(L):
-        hamiltonian += g/2*sp(1, i, L)
-        if i != L-1:
-            hamiltonian += -1/2*sp(3, i, L) @ sp(3, i+1, L)
+    hamiltonian = np.zeros((2**N, 2**N), dtype='complex')
+    for i in range(N):
+        hamiltonian += g/2*sp(1, i, N)
+        if i != N-1:
+            hamiltonian += -1/2*sp(3, i, N) @ sp(3, i+1, N)
 
     # diagonalize
     E, V = np.linalg.eig(hamiltonian)
 
     # time evolve
     magnetization = np.zeros(Npoints)
-    initial_state = np.array([int(n==0) for n in range(2**L)])
+    initial_state = np.array([int(n==0) for n in range(2**N)])
     overlap = V.transpose().conj() @ initial_state
     for ind,T in enumerate(np.linspace(0,t,Npoints)):
         state_evolved = V @ (np.exp(-1j*T*E) * overlap)
