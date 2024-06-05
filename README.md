@@ -15,7 +15,7 @@ conda install numpy matplotlib
 ```
 and 
 ```
-pip install qiskit qiskit_experiments
+pip install qiskit qiskit_experiments qiskit-aer
 ```
 3. Google colab <https://colab.research.google.com/> from web brower without
    any installation
@@ -37,7 +37,7 @@ pip install qiskit qiskit_experiments
 ## Git 
 
 - open a terminal
-- Get a local copy of the remote repoistory with `git clone https://gitlab.lrz.de/cmt-computational-physics/fopra34.git`
+- Get a local copy of the remote repository with `git clone https://gitlab.lrz.de/cmt-computational-physics/fopra34.git`
   Alternatively, initialize a new repository in an exisiting folder with `git init`.
 - write code and modify local files
 - `git status` shows which files have been changed.
